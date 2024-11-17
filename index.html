@@ -8,11 +8,12 @@
     <link rel="stylesheet" href="./src/css/style.css" />
   </head>
   <body class="min-h-screen bg-summer Weather Applicationbg-cover bg-center bg-no-repeat font-zilla font-normal flex flex-col items-center justify-center relative before: content-[''] before:absolute before:inset-0 before:bg-black/50 before:opacity-5">
-    <header class="w-full relative z-40">
+    <header>
       <main>
         <div class="container">
           <div class="title-box w-3/6  mx-auto my-4 py-10 bg-gradient-to-r from-zinc-600/30 from-10% via-stone-800/50 via-30% to-gray-600/50 to-90% backdrop-blur-md shadow-xl rounded-lg">
-            <h1 class="xl:text-6xl lg:text-4xl md:text-4xl sm:text-3xl text-center font-black text-stone-200">Weather Application</h1>
+            <h1 class="xl:text-6xl lg:text-4xl md:text-4xl sm:text-3xl text-center font-black text-stone-200">Weather Application
+            </h1>
           </div>
         </div>
       </main>
@@ -20,11 +21,22 @@
     <section>
       <main>
         <div class="container">
-          <div class="app-box"></div>
+          <div class="app-box w-3/6  mx-auto my-2 py-10">
+            <div class="flex items-center justify-center w-full">
+              <div id="search-container" class="w-16 h-16 rounded-full flex flex-wrap itemes-center justify-center content-center text-xl  bg-gradient-to-r from-zinc-700/30 from-10% via-stone-800/60 via-30% to-gray-700/60 to-90% backdrop-blur-md shadow-xl py-3 transition-all duration-150 ease-in-out">
+                <div class="w-full relative">
+                  <input type="text" name="search-city" id="search-input" placeholder="search city" class="w-full py-2 bg-transparent px-12 outline-none placeholder:text-white">
+                  <button id="search-btn" class="text-white font-bold cursor-pointer absolute top-1/2 right-0 translate-x-[0%] translate-y-[-50%]"><i class="fas fa-search pr-5"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
     </section>
     <script type="module" src="/main.js"></script>
   </body>
 </html>
-<!-- https://api.openweathermap.org/data/2.5/weather?q=dhaka&APPID=3bc3ac2a007b0be5b02e9cbf2a9d2e93 -->
+<!-- https://api.openweathermap.org/data/2.5/weather?q=dhaka&APPID=3bc3ac2a007b0be5b02e9cbf2a9d2e93
+ bg-gradient-to-r from-zinc-600/30 from-10% via-stone-800/50 via-30% to-gray-600/50 to-90% backdrop-blur-md shadow-xl rounded-lg 
+ -->

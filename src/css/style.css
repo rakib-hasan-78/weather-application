@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
 
-@import 'font-awesome/css/font-awesome.min.css';
+
+@import "@fortawesome/fontawesome-free/css/all.css";
 
 
 @tailwind base;
@@ -9,7 +10,13 @@
 
 @layer utilities {
     main{
-        @apply w-11/12 mx-auto;
+        @apply w-11/12 md:w-full mx-auto;
+    }
+    header{
+        @apply w-full relative z-40;
+    }
+    section{
+        @apply w-full relative z-40;
     }
 
 }
@@ -17,4 +24,5 @@
     .container {
         @apply w-full;
     }
+    
 }
