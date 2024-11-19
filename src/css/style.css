@@ -10,7 +10,7 @@
 
 @layer utilities {
     main{
-        @apply w-11/12 md:w-full mx-auto;
+        @apply xl:w-11/12 md:w-full mx-auto;
     }
     header{
         @apply w-full relative z-40;
@@ -24,5 +24,25 @@
     .container {
         @apply w-full;
     }
+    .items{
+        @apply w-full flex space-x-3 px-3 items-center py-3;
+    }
+    .text-style{
+        @apply capitalize text-white/55 font-bold;
+    }
     
+}
+
+.forecast-wrapper::-webkit-scrollbar {
+    height: 8px; /* Ensures horizontal scrollbar thickness */
+}
+
+.forecast-wrapper::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 30px; /* Rounded scrollbar track */
+}
+
+.forecast-wrapper::-webkit-scrollbar-thumb {
+    background: #6b7280; /* Thumb color */
+    border-radius: 30px; /* Rounded scrollbar thumb */
 }

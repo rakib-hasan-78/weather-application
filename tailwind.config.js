@@ -21,9 +21,16 @@ export default {
         spring: "url('./src/image/spring.jpg')",
         winter: "url('./src/image/winter.jpg')",
         autumn: "url('./src/image/autumn.jpg')"
-      }
+      },
+      scrollbar: {
+        DEFAULT: {
+          'borderRadius': '8px',
+          'thumb': '#6b7280',
+          'track': '#e5e7eb',
+        },
+      },
     },
   },
-  plugins: [],
+  plugins: [require('tailwind-scrollbar'),],
 }
 
