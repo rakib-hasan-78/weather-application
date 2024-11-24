@@ -17,7 +17,6 @@ searchBtn.addEventListener('click', (e)=>{
 });
 
 const messageHandler = (image, imageText, msgTitle, msgDes) => {
-
     const main = document.querySelector('#main-container');
     const messageSection = document.createElement('div');
     messageSection.id = 'message-section';
@@ -35,6 +34,43 @@ const messageHandler = (image, imageText, msgTitle, msgDes) => {
 const removeMessage = () => {
     const main = document.querySelector('#main-container');
     const messageSection = document.getElementById('message-section');
-    main.removeChild(messageSection);
+    if (messageSection) {
+        main.removeChild(messageSection); // Remove only if it exists
+    }
 };
 
+/* Grabbing city input */
+const searchHandler = document.getElementById('search-input');
+searchHandler.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        if (searchHandler.value.trim() !== '') {
+            weatherUpdate(searchHandler.value.trim());
+            searchHandler.value = '';
+        }
+    }
+});
+
+/* Fetching weather API */
+const getWeatherData = async (endPoint, city) => {
+    const APIKey = `3bc3ac2a007b0be5b02e9cbf2a9d2e93`;
+    const weatherApi = `https://api.openweathermap.org/data/2.5/${endPoint}?q=${city}&APPID=${APIKey}&units=metric`;
+    const response = await fetch(weatherApi);
+    const result = await response.json();
+    return result;
+};
+
+const weatherUpdate = async (city) => {
+    try {
+        const weatherResult = await getWeatherData('weather', city);
+        if (weatherResult.cod === 200) {
+            removeMessage(); // Safely remove any existing messages
+            console.log(weatherResult);
+        } else {
+            removeMessage();
+            messageHandler('./src/image/not-found.png', 'error-image', 'Error!', `City not found: ${weatherResult.cod}`);
+        }
+    } catch (error) {
+        removeMessage(); // Ensure no stale message remains
+        messageHandler('./src/image/not-found.png', 'error-image', 'Error!', `Something went wrong: ${error.message}`);
+    }
+};
