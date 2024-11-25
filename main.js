@@ -70,19 +70,19 @@ const weatherUpdate = async (city) => {
         const weatherResult = await getWeatherData('weather', city);
         if (weatherResult.cod === 200) {
             removeMessage(); // Safely remove any existing messages
-            const {name, main, weather, wind, sys} = weatherResult;
+            const {name, main, sys, weather, wind} = weatherResult;
             updatedCityData({
-                name,
-                country: sys.country,
-                weather: weather[0].description,
-                icon: weather[0].icon,
-                temp: main.temp,
-                humidity: main.humidity,
-                temp_max: main.temp_max,
-                temp_min: main.temp_min,
-                wind_speed: wind.speed,
-                feels_like: main.feels_like,
-            });
+              name,
+              country: sys.country,
+              temp: main.temp.toFixed(1),
+              humidity: main.humidity,
+              feels_like: main.feels_like.toFixed(1),
+              temp_min: main.temp_min.toFixed(1),
+              temp_max: main.temp_max.toFixed(1),
+              id: weather[0].id,
+              description: weather[0].description,
+              speed: wind.speed
+            })
             console.log(weatherResult);
         } else {
             removeMessage();
@@ -95,60 +95,74 @@ const weatherUpdate = async (city) => {
 };
 
 const updatedCityData = (data) => {
-    const { name, country, weather, icon, temp, humidity, temp_max, temp_min, wind_speed, feels_like } = data;
-    const weatherData = document.getElementById('main-container');
+    const {name, country, temp, humidity, feels_like, temp_min, temp_max, id, description, speed} = data;
+    const weatherData = document.getElementById('weather-section-data');
     let dataObj = '';
     dataObj += `
-            <div id="weather-forecast" class="grid grid-cols-2 gap-3 mx-2">
-              <div  class="flex flex-wrap flex-col items-center">
-                <div class="items">
-                  <span class="text-white"><i class="fa-solid fa-location-dot"></i></span>
-                  <span class="city-name text-style">${name},${country}</span>
-                </div>
-                <div class="items px-0 py-3">
-                  <img src="./src/image/weather/thunderstorm.svg" class="w-1/2 h-auto px-0" alt=""/>
-                </div>
-                <div class="items">
-                  <span class="text-white text-lg"><i class="fa-solid fa-droplet"></i></span>
-                  <span class="text-style flex flex-wrap flex-col content-center">
-                    <span class="card-humid-title text-xl">humidity</span>
-                    <span>55%</span>
-                  </span>
-                </div>
-                <div class="items">
-                  <span class="text-white text-lg"><i class="fa-solid fa-temperature-three-quarters"></i></span>
-                  <span class="text-style flex flex-wrap flex-col content-center">
-                    <span class="card-humid-title text-xl">max temp <span class="text-xl"><span id="max-temp">67</span></span>
+              <div id="weather-forecast" class="grid grid-cols-2 gap-2 mx-2">
+                <div  class="flex flex-wrap flex-col items-center">
+                  <div class="items">
+                    <span class="text-white"><i class="fa-solid fa-location-dot"></i></span>
+                    <span class="city-name text-style">${name}, ${country}</span>
+                  </div>
+                  <div class="items px-0 py-3 flex items-center justify-around">
+                    <img src="./src/image/weather/${id}" class="w-1/2 h-auto px-0" alt="image ${id}"/>
+                  </div>
+                  <div class="items flex items-center">
+                    <span class="text-white text-lg"><i class="fa-solid fa-droplet"></i></span>
+                    <span class="text-style flex flex-wrap flex-col content-center">
+                      <span class="card-humid-title text-xl">humidity</span>
+                      <span>${humidity}%</span>
                     </span>
-                    <span class="card-humid-title text-xl">min temp <span class="text-xl"><span id="min-temp">67</span></span>
+                  </div>
+                  <div class="items">
+                    <span class="text-white text-lg"><i class="fa-solid fa-temperature-three-quarters"></i></span>
+                    <span class="text-style flex flex-wrap flex-col content-center">
+                      <span class="card-humid-title text-xl">max temp <br> <span class="text-lg"><span id="max-temp">${temp_max} °C</span></span>
+                      </span>
+                      <span class="card-humid-title text-xl">min temp <br><span class="text-lg"><span id="min-temp">${temp_min} °C</span></span>
+                      </span>
+                  </div>
+                </div>
+                <div class="flex flex-wrap flex-col items-center">
+                  <div class="items justify-end">
+                    <span class="text-white"><i class="fa-regular fa-calendar-days"></i></span>
+                    <span  class=" card-date text-style">${dateHandler()}</span>
+                  </div>
+                  <div class="items justify-end flex-col content-center px-0 py-1 mt-5">
+                    <span class="flex items-center flex-col pl-14"><span class=" text-style text-temp text-2xl font-extrabold">${temp} °C</span>
+                    <span class="text-style text-2xl text-center">${description}</span>
+                  </div>
+                  <div class="items justify-end pt-8">
+                    <span class="text-white text-lg"><i class="fa-solid fa-wind"></i></span>
+                    <span class="text-style flex flex-wrap flex-col content-center">
+                      <span class="card-humid-title text-xl">wind speed</span>
+                      <span>${speed} A/s</span>
                     </span>
+                  </div>
+                  <div class="items justify-end">
+                    <span class="text-white"><i class="fa-solid fa-fire"></i></span>
+                    <span class="text-style flex flex-wrap flex-col content-center">
+                      <span class="card-humid-title text-xl">feels like</span>
+                      <span>${feels_like} °C</span>
+                    </span> 
+                  </div>
                 </div>
               </div>
-              <div class="flex flex-wrap flex-col items-center">
-                <div class="items justify-end">
-                  <span class="text-white"><i class="fa-regular fa-calendar-days"></i></span>
-                  <span  class=" card-date text-style">wed, 07, Aug</span>
-                </div>
-                <div class="items justify-end flex-col content-center px-0 py-1 mt-5">
-                  <span class="flex items-center space-x-2 pl-14"><span class=" text-style text-temp text-3xl font-extrabold">30.1</span><span class="text-white text-4xl">°C</span></span>
-                  <span class="text-style text-2xl pl-4 text-center">cloudy</span>
-                </div>
-                <div class="items justify-end pt-8">
-                  <span class="text-white text-lg"><i class="fa-solid fa-wind"></i></span>
-                  <span class="text-style flex flex-wrap flex-col content-center">
-                    <span class="card-humid-title text-xl">wind speed</span>
-                    <span>55%</span>
-                  </span>
-                </div>
-                <div class="items justify-end">
-                  <span class="text-white"><i class="fa-solid fa-fire"></i></span>
-                  <span class="text-style flex flex-wrap flex-col content-center">
-                    <span class="card-humid-title text-xl">feels like</span>
-                    <span>55%</span>
-                  </span> 
-                </div>
-              </div>
-            </div>
     `
     weatherData.innerHTML = dataObj;
 }
+
+
+/* date fixing function */
+
+const dateHandler = () => {
+  const currentDate = new Date();
+  const componentPattern = {
+    weekday:'short',
+    day:'2-digit',
+    month:'short'
+  }
+  return currentDate.toLocaleDateString('en-GB', componentPattern);
+}
+
