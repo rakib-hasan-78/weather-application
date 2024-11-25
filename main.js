@@ -105,8 +105,8 @@ const updatedCityData = (data) => {
                     <span class="text-white"><i class="fa-solid fa-location-dot"></i></span>
                     <span class="city-name text-style">${name}, ${country}</span>
                   </div>
-                  <div class="items px-0 py-3 flex items-center justify-around">
-                    <img src="./src/image/weather/${id}" class="w-1/2 h-auto px-0" alt="image ${id}"/>
+                  <div class="items px-0 py-0 flex items-center justify-around">
+                    <img src="./src/image/weather/${weatherIconHandler(id)}" class="w-1/2 h-16 px-0" alt="image ${id}"/>
                   </div>
                   <div class="items flex items-center">
                     <span class="text-white text-lg"><i class="fa-solid fa-droplet"></i></span>
@@ -137,7 +137,7 @@ const updatedCityData = (data) => {
                     <span class="text-white text-lg"><i class="fa-solid fa-wind"></i></span>
                     <span class="text-style flex flex-wrap flex-col content-center">
                       <span class="card-humid-title text-xl">wind speed</span>
-                      <span>${speed} A/s</span>
+                      <span>${speed} M/s</span>
                     </span>
                   </div>
                   <div class="items justify-end">
@@ -166,3 +166,37 @@ const dateHandler = () => {
   return currentDate.toLocaleDateString('en-GB', componentPattern);
 }
 
+/* image handler */
+
+const weatherIconHandler = (id) => {
+      if (id <=232 ) return 'thunderstorm.svg';
+      if (id<= 321)  return 'drizzle.svg';
+      if (id<= 531)  return 'rain.svg';
+      if (id<= 622)  return 'snow.svg';
+      if (id<= 781)  return 'atmosphere.svg';
+      if (id<= 800)  return 'clear.svg';
+      else return 'clouds.svg';
+}
+
+const weatherTextureHandler = () => {
+  const date = new Date();
+  const targetedMonth = date.getMonth(); 
+  const body = document.querySelector('body');
+
+  // Remove all season classes to prevent conflicts
+  body.classList.remove('bg-winter', 'bg-spring', 'bg-summer', 'bg-rainy', 'bg-autumn');
+
+  if (targetedMonth === 11 || targetedMonth === 0 || targetedMonth === 1) {
+    body.classList.add('bg-winter');
+  } else if (targetedMonth >= 2 && targetedMonth <= 4) {
+    body.classList.add('bg-spring');
+  } else if (targetedMonth >= 5 && targetedMonth <= 7) {
+    body.classList.add('bg-summer');
+  } else if (targetedMonth >= 8 && targetedMonth <= 9) {
+    body.classList.add('bg-rainy');
+  } else if (targetedMonth === 10) {
+    body.classList.add('bg-autumn');
+  }
+};
+
+weatherTextureHandler();
