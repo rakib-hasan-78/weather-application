@@ -14,7 +14,7 @@ const searchOpen = () => {
         } else {
             searchContainer.classList.remove('w-16','h-16');
             searchContainer.classList.add('w-full');
-            messageHandler('./src/image/search-city.png','search-city', 'search city', 'get weather update of a city here')
+            messageHandler('./src/image/search-city.png','search-city', 'search city', 'get weather update of a city here');
         }
     
     });
@@ -50,7 +50,10 @@ const searchHandler = document.getElementById('search-input');
 searchHandler.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
         if (searchHandler.value.trim() !== '') {
+            document.getElementById('weather-section-data').innerHTML = '';
+            document.getElementById('main-carousel').innerHTML = '';
             weatherUpdate(searchHandler.value.trim());
+            forecastedData(searchHandler.value.trim());
             searchHandler.value = '';
         }
     }
@@ -83,7 +86,7 @@ const weatherUpdate = async (city) => {
               description: weather[0].description,
               speed: wind.speed
             })
-            console.log(weatherResult);
+
         } else {
             removeMessage();
             messageHandler('./src/image/not-found.png', 'error-image', 'Error!', `City not found: ${weatherResult.cod}`);
@@ -93,6 +96,26 @@ const weatherUpdate = async (city) => {
         messageHandler('./src/image/not-found.png', 'error-image', 'Error!', `Something went wrong: ${error.message}`);
     }
 };
+
+const forecastedData = async (city) => {
+  const forecastData = await getWeatherData('forecast', city)
+  const timeStand = '12:00:00';
+  const today = new Date().getDate();
+  forecastData.list.forEach(forecast=>{
+
+      if (forecast.dt_txt.includes(timeStand) && !forecast.dt_txt.includes(today)) {
+        const {dt_txt, main, weather} = forecast;
+        carouselData({
+          dt_txt,
+          temp: main.temp.toFixed(1),
+          id: weather[0].id
+        })
+      }
+    
+  })
+  console.log(today);
+}
+
 
 const updatedCityData = (data) => {
     const {name, country, temp, humidity, feels_like, temp_min, temp_max, id, description, speed} = data;
@@ -153,7 +176,30 @@ const updatedCityData = (data) => {
     weatherData.innerHTML = dataObj;
 }
 
+/* carousel data function */
+const carouselData = (data) => {
+  const carouselBody = document.getElementById('main-carousel');
+  const {dt_txt, id, temp} = data;
 
+
+  const setDate = new Date(dt_txt);
+  const formatedDate = {
+      day: '2-digit',
+      month: 'short'
+  };
+  const targetedDate = setDate.toLocaleDateString('en-GB', formatedDate);
+    let obj = '';
+    obj=`
+      <div class="forecast-item w-2/3 min-w-[30%] border rounded-lg flex flex-col items-center shadow-md py-4 my-3 mx-2">
+        <div class="forecast-date text-sm font-medium text-white">${targetedDate}</div>
+        <img src="./src/image/weather/${weatherIconHandler(id)}" alt="Sunny weather" class="w-14 h-14">
+        <div class="temp text-xl font-bold">
+          <span class="temp-value text-white">${temp}°C</span>
+        </div>
+      </div>
+    `
+    carouselBody.innerHTML += obj;
+}
 /* date fixing function */
 
 const dateHandler = () => {
@@ -165,6 +211,11 @@ const dateHandler = () => {
   }
   return currentDate.toLocaleDateString('en-GB', componentPattern);
 }
+
+
+
+
+
 
 /* image handler */
 
@@ -200,3 +251,4 @@ const weatherTextureHandler = () => {
 };
 
 weatherTextureHandler();
+
