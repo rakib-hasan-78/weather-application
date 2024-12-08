@@ -85,7 +85,8 @@ const weatherUpdate = async (city) => {
               id: weather[0].id,
               description: weather[0].description,
               speed: wind.speed
-            })
+            });
+            localStorage.setItem('lastCity', city);
 
         } else {
             removeMessage();
@@ -110,6 +111,7 @@ const forecastedData = async (city) => {
           temp: main.temp.toFixed(1),
           id: weather[0].id
         })
+        localStorage.setItem('lastCity', city);
       }
     
   })
@@ -252,3 +254,11 @@ const weatherTextureHandler = () => {
 
 weatherTextureHandler();
 
+const loadLastCity = () => {
+  const lastCity = localStorage.getItem('lastCity');
+  if (lastCity) {
+      weatherUpdate(lastCity);
+      forecastedData(lastCity);
+  }
+};
+loadLastCity()
