@@ -4,13 +4,14 @@ export default {
     './*.{html,js}', 
     './src/**/*.{html,js}'
   ],
-  screens:{
-    sm:'480px',
-    md:'767px',
-    lg:'1020px',
-    xl:'1440px'
-  },
+
   theme: {
+    screens:{
+      sm:'480px',
+      md:'767px',
+      lg:'1020px',
+      xl:'1440px'
+    },
     extend: {
       fontFamily:{
         zilla:['Zilla Slab', 'serif']
